@@ -8,6 +8,7 @@ import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import emptyProfilePic from '../../assets/emptyProfilePic.jpg';
 import { useContext } from 'react';
 import { DarkModeContext } from '../../context/darkModeContext';
 import { AuthContext } from '../../context/authContext';
@@ -38,7 +39,12 @@ const NavBar = () => {
         <EmailOutlinedIcon />
         <NotificationsOutlinedIcon />
         <div className="user">
-          <img src={currentUser.profilePic} alt="profile-pic" />
+          <img
+            src={
+              currentUser.profilePic ? currentUser.profilePic : emptyProfilePic
+            }
+            alt="profile-pic"
+          />
           <span>{currentUser.name}</span>
         </div>
       </div>

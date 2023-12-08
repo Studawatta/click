@@ -1,7 +1,37 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './register.scss';
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({});
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const res = await axios.post(
+        'http://localhost:8080/api/auth/register',
+        formData
+      );
+
+      setError('');
+      setLoading(false);
+      navigate('/login');
+    } catch (error) {
+      setLoading(false);
+      setError(error.response.data.message);
+      // console.log(error.response.data);
+    }
+  };
   return (
     <div className="register">
       <div className="card">
@@ -19,13 +49,34 @@ const Register = () => {
         </div>
         <div className="right">
           <h1>Register</h1>
-          <form>
-            <input type="text" placeholder="Username" />
-            <input type="email" placeholder="email" />
-            <input type="password" placeholder="Password" />
-            <input type="text" placeholder="Name" />
-            <button>Register</button>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              id="username"
+              placeholder="Username"
+              onChange={handleChange}
+            />
+            <input
+              type="email"
+              id="email"
+              placeholder="email"
+              onChange={handleChange}
+            />
+            <input
+              type="password"
+              id="password"
+              placeholder="Password"
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              id="name"
+              placeholder="Name"
+              onChange={handleChange}
+            />
+            <button type="submit">{loading ? 'Loading' : 'Register'}</button>
           </form>
+          {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
       </div>
     </div>

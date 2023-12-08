@@ -12,6 +12,8 @@ import Messages from '../../assets/10.png';
 import Tutorials from '../../assets/11.png';
 import Courses from '../../assets/12.png';
 import Fund from '../../assets/13.png';
+import emptyProfilePic from '../../assets/emptyProfilePic.jpg';
+
 import { useContext } from 'react';
 import { AuthContext } from '../../context/authContext';
 
@@ -22,7 +24,14 @@ const LeftBar = () => {
       <div className="container">
         <div className="menu">
           <div className="user">
-            <img src={currentUser.profilePic} alt="profile-pic" />
+            <img
+              src={
+                currentUser.profilePic
+                  ? currentUser.profilePic
+                  : emptyProfilePic
+              }
+              alt="profile-pic"
+            />
             <span>{currentUser.name}</span>
           </div>
           <div className="item">

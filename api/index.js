@@ -1,5 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.route.js';
 import userRoutes from './routes/users.route.js';
 import postRoutes from './routes/posts.route.js';
@@ -11,7 +13,18 @@ const port = process.env.PORT || 8800;
 dotenv.config();
 const app = express();
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Credentials', true);
+  next();
+});
+
 app.use(express.json());
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+  })
+);
+app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
