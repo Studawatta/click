@@ -7,6 +7,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import Comments from '../comments/Comments';
+import emptyProfilePic from '../../assets/emptyProfilePic.jpg';
 
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
@@ -17,7 +18,10 @@ const Post = ({ post }) => {
       <div className="container">
         <div className="user">
           <div className="userInfo">
-            <img src={post.profilePic} alt="profile-pic" />
+            <img
+              src={post.profilePic ? post.profilePic : emptyProfilePic}
+              alt="profile-pic"
+            />
             <div className="details">
               <Link
                 to={`/profile/${post.userId}`}
@@ -32,7 +36,7 @@ const Post = ({ post }) => {
         </div>
         <div className="content">
           <p>{post.desc}</p>
-          <img src={post.img} alt="post-img" />
+          {post.img && <img src={post.img} alt="post-img" />}
         </div>
         <div className="info">
           <div className="item">
