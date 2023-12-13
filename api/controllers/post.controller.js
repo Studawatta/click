@@ -7,12 +7,10 @@ export const getPosts = (req, res, next) => {
   jwt.verify(token, process.env.JWT_SECRET, (err, userInfo) => {
     if (err) return res.status(403).json('Token is not valid!');
 
-    console.log(userInfo.id);
     getAllPostsByUser(userInfo.id, (error, results) => {
       if (error) {
         return next(error);
       }
-      console.log(results);
       return res.status(200).json(results);
     });
   });

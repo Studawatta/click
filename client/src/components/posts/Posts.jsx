@@ -13,7 +13,6 @@ const Posts = () => {
       }),
   });
 
-  console.log('data', data);
   return (
     <div className="posts">
       {error

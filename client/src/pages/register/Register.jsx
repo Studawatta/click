@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './register.scss';
+import OAuth from '../../components/OAuth/OAuth';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -74,7 +75,10 @@ const Register = () => {
               placeholder="Name"
               onChange={handleChange}
             />
-            <button type="submit">{loading ? 'Loading' : 'Register'}</button>
+            <button className="regButton" type="submit">
+              {loading ? 'Loading' : 'Register'}
+            </button>
+            <OAuth />
           </form>
           {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>

@@ -37,13 +37,14 @@
       }
 
       button {
-        width: 50%;
+        width: 100%;
         padding: 10px;
         border: none;
         background-color: white;
         color: rebeccapurple;
         font-weight: bold;
         cursor: pointer;
+        text-transform: uppercase;
       }
     }
 
@@ -66,8 +67,8 @@
           border-bottom: 1px solid lightgray;
           padding: 20px 10px;
         }
-        button {
-          width: 50%;
+        .loginBtn {
+          width: 100%;
           padding: 10px;
           border: none;
           background-color: #938eef;

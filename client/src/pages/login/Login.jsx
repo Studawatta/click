@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './login.scss';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../context/authContext';
+import OAuth from '../../components/OAuth/OAuth';
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -53,7 +54,10 @@ const Login = () => {
               placeholder="Password"
               onChange={handleChange}
             />
-            <button onClick={handleLogin}>Login</button>
+            <button className="loginBtn" onClick={handleLogin}>
+              Login
+            </button>
+            <OAuth />
           </form>
           {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>

@@ -1,4 +1,8 @@
-import { getUserByUsername, registerUser } from '../services/user.services.js';
+import {
+  getUserByEmail,
+  getUserByUsername,
+  registerUser,
+} from '../services/user.services.js';
 import { errorHandler } from '../utils/error.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -35,7 +39,6 @@ export const login = (req, res, next) => {
     if (error) {
       return next(error);
     }
-    // console.log(results[0].password);
     if (results.length === 0) {
       return next(errorHandler(404, 'User not found!'));
     } else {
@@ -66,4 +69,63 @@ export const logout = (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export const google = (req, res, next) => {
+  const body = req.body;
+  getUserByEmail(body.email, (error, results) => {
+    if (error) {
+      return next(error);
+    }
+    if (results.length) {
+      const { password: pass, ...rest } = results[0];
+      const token = jwt.sign({ id: results[0].id }, process.env.JWT_SECRET);
+      res
+        .cookie('access_token', token, { httpOnly: true })
+        .status(200)
+        .json(rest);
+    } else {
+      //Generate password
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+
+      //hash password
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync(generatedPassword, salt);
+
+      registerUser(
+        {
+          username:
+            body.username.split(' ').join('').toLowerCase() +
+            Math.random().toString(36).slice(-4),
+          email: body.email,
+          password: hashedPassword,
+          name: body.username,
+          profilePic: body.profilePic,
+        },
+        (error, results) => {
+          if (error) {
+            return next(error);
+          }
+
+          getUserByEmail(body.email, (error, results) => {
+            if (error) {
+              return next(error);
+            }
+            //Generate token
+            const token = jwt.sign(
+              { id: results[0].id },
+              process.env.JWT_SECRET
+            );
+            const { password: pass, ...rest } = results[0];
+            res
+              .cookie('access_token', token, { httpOnly: true })
+              .status(200)
+              .json(rest);
+          });
+        }
+      );
+    }
+  });
 };

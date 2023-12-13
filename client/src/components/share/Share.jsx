@@ -20,6 +20,7 @@ const Share = () => {
           />
           <input
             type="text"
+            id="share"
             placeholder={`What's on your mind ${currentUser.name}?`}
           />
         </div>
