@@ -1,4 +1,4 @@
-import { getAllPostsByUser } from '../services/post.sevices.js';
+import { getAllPosts } from '../services/post.sevices.js';
 import jwt from 'jsonwebtoken';
 
 export const getPosts = (req, res, next) => {
@@ -7,7 +7,7 @@ export const getPosts = (req, res, next) => {
   jwt.verify(token, process.env.JWT_SECRET, (err, userInfo) => {
     if (err) return res.status(403).json('Token is not valid!');
 
-    getAllPostsByUser(userInfo.id, (error, results) => {
+    getAllPosts(userInfo.id, (error, results) => {
       if (error) {
         return next(error);
       }
@@ -15,3 +15,5 @@ export const getPosts = (req, res, next) => {
     });
   });
 };
+
+export const addPosts = (req, res, next) => {};

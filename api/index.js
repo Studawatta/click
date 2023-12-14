@@ -8,7 +8,7 @@ import postRoutes from './routes/posts.route.js';
 import likeRoutes from './routes/likes.route.js';
 import commentRoutes from './routes/comments.route.js';
 
-const port = process.env.PORT || 8800;
+const port = process.env.PORT || 5000;
 
 dotenv.config();
 const app = express();
