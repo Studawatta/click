@@ -1,7 +1,8 @@
 import { db } from '../connect.js';
 
 export const registerUser = (data, callBack) => {
-  const q = `INSERT INTO users (username,email,password,name,profilePic) VALUES (?,?,?,?,?)`;
+  const q =
+    'INSERT INTO users (`username`,`email`,`password`,`name`,`profilePic`) VALUES (?,?,?,?,?)';
   const values = [
     data.username,
     data.email,
