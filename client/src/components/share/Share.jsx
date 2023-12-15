@@ -92,7 +92,6 @@ const Share = () => {
     setPostDesc('');
     setPostImg(null);
   };
-  console.log(postDesc);
   return (
     <div className="share">
       <div className="container">

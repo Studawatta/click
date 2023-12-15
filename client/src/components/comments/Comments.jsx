@@ -2,12 +2,14 @@ import { useContext, useState } from 'react';
 import './comments.scss';
 import { AuthContext } from '../../context/authContext';
 import emptyProfilePic from '../../assets/emptyProfilePic.jpg';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';
 import moment from 'moment';
 
 const Comments = ({ postId }) => {
   const { currentUser } = useContext(AuthContext);
+
+  const [comment, setComment] = useState('');
 
   const { isPending, error, data } = useQuery({
     queryKey: ['comments'],
@@ -18,6 +20,27 @@ const Comments = ({ postId }) => {
       }),
   });
 
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (newComment) => {
+      return makeRequest.post('/comments', newComment);
+    },
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
+    },
+  });
+
+  const handleComment = (e) => {
+    e.preventDefault();
+    mutation.mutate({
+      desc: comment,
+      postId: postId,
+    });
+    setComment('');
+  };
+  console.log(comment);
   return (
     <div className="comments">
       <div className="write">
@@ -27,8 +50,16 @@ const Comments = ({ postId }) => {
           }
           alt="profile-pic"
         />
-        <input type="text" id="comment" placeholder="write a comment" />
-        <button>Send</button>
+        <form>
+          <input
+            type="text"
+            id="comment"
+            value={comment}
+            placeholder="write a comment"
+            onChange={(e) => setComment(e.target.value)}
+          />
+          <button onClick={handleComment}>Send</button>
+        </form>
       </div>
       {isPending
         ? 'Loading...'
