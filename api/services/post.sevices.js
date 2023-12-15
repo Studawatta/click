@@ -4,11 +4,7 @@ export const createPost = (data, callBack) => {
   const q =
     'INSERT INTO posts (`desc`,`img`,`userId`,`createdAt`) VALUES (?,?,?,?)';
 
-  // const q = `INSERT INTO users (username,email,password,name,profilePic) VALUES (?,?,?,?,?)`;
-  // console.log(data.createdAt);
-
   const values = [data.desc, data.img, data.userId, data.createdAt];
-  console.log(values);
   db.query(q, values, (error, results) => {
     if (error) {
       return callBack(error);

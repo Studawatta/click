@@ -1,45 +1,57 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import './comments.scss';
 import { AuthContext } from '../../context/authContext';
+import emptyProfilePic from '../../assets/emptyProfilePic.jpg';
+import { useQuery } from '@tanstack/react-query';
+import { makeRequest } from '../../axios';
+import moment from 'moment';
 
-const Comments = () => {
+const Comments = ({ postId }) => {
   const { currentUser } = useContext(AuthContext);
-  //Temporary
-  const comments = [
-    {
-      id: 1,
-      desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem nequeaspernatur ullam aperiam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem nequeaspernatur ullam aperiam',
-      name: 'John Doe',
-      userId: 1,
-      profilePicture:
-        'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    },
-    {
-      id: 2,
-      desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem nequeaspernatur ullam aperiam',
-      name: 'Jane Doe',
-      userId: 2,
-      profilePicture:
-        'https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=1600',
-    },
-  ];
+
+  const { isPending, error, data } = useQuery({
+    queryKey: ['comments'],
+    queryFn: async () =>
+      await makeRequest.get('/comments?postId=' + postId).then((res) => {
+        // console.log(res.data);
+        return res.data;
+      }),
+  });
+
   return (
     <div className="comments">
       <div className="write">
-        <img src={currentUser.profilePic} alt="profile-pic" />
+        <img
+          src={
+            currentUser.profilePic ? currentUser.profilePic : emptyProfilePic
+          }
+          alt="profile-pic"
+        />
         <input type="text" id="comment" placeholder="write a comment" />
         <button>Send</button>
       </div>
-      {comments.map((comment) => (
-        <div className="comment">
-          <img src={comment.profilePicture} alt="user-profile" />
-          <div className="info">
-            <span>{comment.name}</span>
-            <p>{comment.desc}</p>
-          </div>
-          <span className="date">1 hour ago</span>
-        </div>
-      ))}
+      {isPending
+        ? 'Loading...'
+        : data.map((comment) => (
+            <div className="comment">
+              <div className="info">
+                <div className="user">
+                  <img
+                    src={
+                      comment.profilePic ? comment.profilePic : emptyProfilePic
+                    }
+                    alt="user-profile"
+                  />
+                  <span>{comment.name}</span>
+                </div>
+                <span className="date">
+                  {moment(comment.createdAt).fromNow()}
+                </span>
+              </div>
+
+              <p>{comment.desc}</p>
+            </div>
+          ))}
     </div>
   );
 };
