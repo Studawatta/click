@@ -64,7 +64,7 @@ const Comments = ({ postId }) => {
       {isPending
         ? 'Loading...'
         : data.map((comment) => (
-            <div className="comment">
+            <div className="comment" key={comment.id}>
               <div className="info">
                 <div className="user">
                   <img

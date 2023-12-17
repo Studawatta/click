@@ -1,8 +1,21 @@
 import moment from 'moment';
-import { createPost, getAllPosts } from '../services/post.sevices.js';
+import {
+  createPost,
+  getAllPosts,
+  getOneUserPosts,
+} from '../services/post.sevices.js';
 
 export const getPosts = (req, res, next) => {
   getAllPosts(req.user.id, (error, results) => {
+    if (error) {
+      return next(error);
+    }
+    return res.status(200).json(results);
+  });
+};
+
+export const getUserPosts = (req, res, next) => {
+  getOneUserPosts(req.params.id, (error, results) => {
     if (error) {
       return next(error);
     }

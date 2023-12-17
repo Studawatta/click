@@ -3,12 +3,11 @@ import Post from '../post/Post';
 import { useQuery } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';
 
-const Posts = () => {
+const Posts = ({ user }) => {
   const { isPending, error, data } = useQuery({
     queryKey: ['posts'],
     queryFn: async () =>
-      await makeRequest.get('/posts').then((res) => {
-        // console.log(res.data);
+      await makeRequest.get(user ? `/posts/${user}` : '/posts').then((res) => {
         return res.data;
       }),
   });

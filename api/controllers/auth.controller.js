@@ -21,6 +21,7 @@ export const register = (req, res, next) => {
       // hash the pssword
       const salt = bcrypt.genSaltSync(10);
       body.password = bcrypt.hashSync(body.password, salt);
+      body.name = body.name.charAt(0).toUpperCase() + body.name.slice(1);
 
       registerUser(body, (error, results) => {
         if (error) {

@@ -24,3 +24,15 @@ export const getAllPosts = (id, callBack) => {
     return callBack(null, results);
   });
 };
+
+export const getOneUserPosts = (id, callBack) => {
+  const q =
+    'SELECT p.*, u.id AS userId, name, profilePic FROM posts AS p JOIN users AS u ON (u.id = p.userId) WHERE u.id = ? ORDER BY p.createdAt DESC';
+
+  db.query(q, [id], (error, results) => {
+    if (error) {
+      return callBack(error);
+    }
+    return callBack(null, results);
+  });
+};

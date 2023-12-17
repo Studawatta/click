@@ -43,9 +43,10 @@ const App = () => {
   };
 
   const ProtectedRoute = () => {
-    if (!currentUser) {
+    if (!currentUser.currentUser) {
       return <Navigate to="/login" />;
     }
+
     return <Layout />;
   };
   return (

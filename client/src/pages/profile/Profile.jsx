@@ -9,63 +9,90 @@ import LanguageIcon from '@mui/icons-material/Language';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Posts from '../../components/posts/Posts';
+import { useParams } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../../context/authContext';
+import { useQuery } from '@tanstack/react-query';
+import { makeRequest } from '../../axios';
+import emptyProfilePic from '../../assets/emptyProfilePic.jpg';
+import blackCover from '../../assets/blackCover.jpg';
 
 const Profile = () => {
+  const { currentUser } = useContext(AuthContext);
+  const params = useParams();
+
+  const { isPending, error, data } = useQuery({
+    queryKey: ['user'],
+    queryFn: async () =>
+      await makeRequest.get(`/users/${params.id}`).then((res) => {
+        return res.data;
+      }),
+  });
+
   return (
-    <div className="profile">
-      <div className="images">
-        <img
-          src="https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          alt=""
-          className="cover"
-        />
-        <img
-          src="https://images.pexels.com/photos/14028501/pexels-photo-14028501.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
-          alt=""
-          className="profilePic"
-        />
-      </div>
-      <div className="profileContainer">
-        <div className="uInfo">
-          <div className="left">
-            <a href="http://facebook.com">
-              <FacebookTwoToneIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <InstagramIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <TwitterIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <LinkedInIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <PinterestIcon fontSize="large" />
-            </a>
+    <>
+      {isPending ? (
+        'Loading'
+      ) : (
+        <div className="profile">
+          <div className="images">
+            <img
+              src={data[0].coverPic ? data[0].coverPic : blackCover}
+              className="cover"
+            />
+            <img
+              src={data[0].profilePic ? data[0].profilePic : emptyProfilePic}
+              alt=""
+              className="profilePic"
+            />
           </div>
-          <div className="center">
-            <span>Jane Doe</span>
-            <div className="info">
-              <div className="item">
-                <PlaceIcon />
-                <span>USA</span>
+          <div className="profileContainer">
+            <div className="uInfo">
+              <div className="left">
+                <a href="http://facebook.com">
+                  <FacebookTwoToneIcon fontSize="large" />
+                </a>
+                <a href="http://facebook.com">
+                  <InstagramIcon fontSize="large" />
+                </a>
+                <a href="http://facebook.com">
+                  <TwitterIcon fontSize="large" />
+                </a>
+                <a href="http://facebook.com">
+                  <LinkedInIcon fontSize="large" />
+                </a>
+                <a href="http://facebook.com">
+                  <PinterestIcon fontSize="large" />
+                </a>
               </div>
-              <div className="item">
-                <LanguageIcon />
-                <span>lama.dev</span>
+              <div className="center">
+                <span>{data[0].name}</span>
+                <div className="info">
+                  <div className="item">
+                    <PlaceIcon />
+                    <span>{data[0].city ? data[0].city : 'city'}</span>
+                  </div>
+                  <div className="item">
+                    <LanguageIcon />
+                    <span>{data[0].website ? data[0].website : 'website'}</span>
+                  </div>
+                </div>
+                {currentUser.id === data[0].id ? (
+                  <button>Update</button>
+                ) : (
+                  <button>follow</button>
+                )}
+              </div>
+              <div className="right">
+                <EmailOutlinedIcon />
+                <MoreVertIcon />
               </div>
             </div>
-            <button>follow</button>
-          </div>
-          <div className="right">
-            <EmailOutlinedIcon />
-            <MoreVertIcon />
+            <Posts user={data[0].id} />
           </div>
         </div>
-        <Posts />
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
