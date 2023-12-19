@@ -5,7 +5,7 @@ import { makeRequest } from '../../axios';
 
 const Posts = ({ user }) => {
   const { isPending, error, data } = useQuery({
-    queryKey: ['posts'],
+    queryKey: ['posts', user],
     queryFn: async () =>
       await makeRequest.get(user ? `/posts/${user}` : '/posts').then((res) => {
         return res.data;

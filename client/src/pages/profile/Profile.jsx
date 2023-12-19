@@ -10,9 +10,9 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Posts from '../../components/posts/Posts';
 import { useParams } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AuthContext } from '../../context/authContext';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';
 import emptyProfilePic from '../../assets/emptyProfilePic.jpg';
 import blackCover from '../../assets/blackCover.jpg';
@@ -22,17 +22,44 @@ const Profile = () => {
   const params = useParams();
 
   const { isPending, error, data } = useQuery({
-    queryKey: ['user'],
+    queryKey: ['user', params.id],
     queryFn: async () =>
       await makeRequest.get(`/users/${params.id}`).then((res) => {
         return res.data;
       }),
   });
+  const { data: relationshipData } = useQuery({
+    queryKey: ['relationship'],
+    queryFn: async () =>
+      await makeRequest
+        .get('/relationships?userId=' + currentUser.id)
+        .then((res) => {
+          return res.data;
+        }),
+  });
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (following) => {
+      if (following)
+        return makeRequest.delete('/relationships?userId=' + data[0].id);
+      return makeRequest.post('/relationships', { userId: data[0].id });
+    },
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['relationship'] });
+    },
+  });
+
+  const handleFollow = () => {
+    mutation.mutate(relationshipData.includes(data[0].id));
+  };
 
   return (
     <>
       {isPending ? (
-        'Loading'
+        'Loading...'
       ) : (
         <div className="profile">
           <div className="images">
@@ -80,7 +107,11 @@ const Profile = () => {
                 {currentUser.id === data[0].id ? (
                   <button>Update</button>
                 ) : (
-                  <button>follow</button>
+                  <button onClick={handleFollow}>
+                    {relationshipData.includes(data[0].id)
+                      ? 'Following'
+                      : 'Follow'}
+                  </button>
                 )}
               </div>
               <div className="right">

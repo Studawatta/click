@@ -1,4 +1,3 @@
-import { json } from 'express';
 import {
   getLikesByPostId,
   addPostLike,

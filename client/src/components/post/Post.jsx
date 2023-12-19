@@ -11,6 +11,7 @@ import emptyProfilePic from '../../assets/emptyProfilePic.jpg';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';
 import { AuthContext } from '../../context/authContext';
+import moment from 'moment';
 
 const Post = ({ post }) => {
   const { currentUser } = useContext(AuthContext);
@@ -57,7 +58,7 @@ const Post = ({ post }) => {
               >
                 <span className="name">{post.name}</span>
               </Link>
-              <span className="date">1 min ago</span>
+              <span className="date">{moment(post.createdAt).fromNow()}</span>
             </div>
           </div>
           <MoreHorizIcon />

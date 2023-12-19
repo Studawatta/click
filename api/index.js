@@ -7,6 +7,7 @@ import userRoutes from './routes/users.route.js';
 import postRoutes from './routes/posts.route.js';
 import likeRoutes from './routes/likes.route.js';
 import commentRoutes from './routes/comments.route.js';
+import relationshipRoutes from './routes/relationship.route.js';
 
 const port = process.env.PORT || 5000;
 
@@ -31,6 +32,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/likes', likeRoutes);
+app.use('/api/relationships', relationshipRoutes);
 
 //error handling middleware
 
