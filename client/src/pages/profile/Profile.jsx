@@ -9,7 +9,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Posts from '../../components/posts/Posts';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '../../context/authContext';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -105,7 +105,9 @@ const Profile = () => {
                   </div>
                 </div>
                 {currentUser.id === data[0].id ? (
-                  <button>Update</button>
+                  <Link to={`/update/${currentUser.id}`}>
+                    <button>Update</button>
+                  </Link>
                 ) : (
                   <button onClick={handleFollow}>
                     {relationshipData.includes(data[0].id)

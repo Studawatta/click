@@ -25,6 +25,14 @@ const Post = ({ post }) => {
       }),
   });
 
+  const { isPending: commentLoading, data: comments } = useQuery({
+    queryKey: ['comments', post.id],
+    queryFn: async () =>
+      await makeRequest.get('/comments?postId=' + post.id).then((res) => {
+        return res.data;
+      }),
+  });
+
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -86,10 +94,16 @@ const Post = ({ post }) => {
             </div>
           )}
 
-          <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
-            <TextsmsOutlinedIcon />
-            12 Comments
-          </div>
+          {commentLoading ? (
+            'Loadin...'
+          ) : (
+            <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
+              <TextsmsOutlinedIcon />
+              {comments.length === 1
+                ? `${comments.length} Comment`
+                : `${comments.length} Comments`}
+            </div>
+          )}
           <div className="item">
             <ShareOutlinedIcon />
             Share

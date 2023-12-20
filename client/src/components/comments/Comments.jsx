@@ -15,7 +15,6 @@ const Comments = ({ postId }) => {
     queryKey: ['comments'],
     queryFn: async () =>
       await makeRequest.get('/comments?postId=' + postId).then((res) => {
-        // console.log(res.data);
         return res.data;
       }),
   });
@@ -40,7 +39,7 @@ const Comments = ({ postId }) => {
     });
     setComment('');
   };
-  console.log(comment);
+
   return (
     <div className="comments">
       <div className="write">
