@@ -51,3 +51,24 @@ export const getUserById = (id, callBack) => {
     return callBack(null, results);
   });
 };
+
+export const userUpdate = (data, callBack) => {
+  const q =
+    'UPDATE users SET `name`=?,`city`=?,`website`=?,`profilePic`=?,`coverPic`=? WHERE id=?';
+
+  const values = [
+    data.name,
+    data.city,
+    data.website,
+    data.profilePic,
+    data.coverPic,
+    data.id,
+  ];
+
+  db.query(q, values, (error, results) => {
+    if (error) {
+      return callBack(error);
+    }
+    return callBack(null, results);
+  });
+};
