@@ -1,23 +1,23 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useContext } from 'react';
 import {
   BrowserRouter,
-  Routes,
-  Route,
-  Outlet,
   Navigate,
+  Outlet,
+  Route,
+  Routes,
 } from 'react-router-dom';
-import Register from './pages/register/Register';
-import Login from './pages/login/Login';
-import Home from './pages/home/Home';
+import LeftBar from './components/leftBar/LeftBar';
 import NavBar from './components/navBar/NavBar';
 import RightBar from './components/rightBar/RightBar';
-import LeftBar from './components/leftBar/LeftBar';
-import Profile from './pages/profile/Profile';
-import './style.scss';
-import { useContext } from 'react';
-import { DarkModeContext } from './context/darkModeContext';
 import { AuthContext } from './context/authContext';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { DarkModeContext } from './context/darkModeContext';
+import Home from './pages/home/Home';
+import Login from './pages/login/Login';
+import Profile from './pages/profile/Profile';
+import Register from './pages/register/Register';
 import UpdateProfile from './pages/updateProfile/UpdateProfile';
+import './style.scss';
 
 const App = () => {
   const currentUser = useContext(AuthContext);

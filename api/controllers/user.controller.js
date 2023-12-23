@@ -10,8 +10,6 @@ export const getUser = (req, res, next) => {
 };
 
 export const updateUser = (req, res, next) => {
-  console.log('ddd');
-
   const data = {
     name: req.body.name
       ? req.body.name.charAt(0).toUpperCase() + req.body.name.slice(1)

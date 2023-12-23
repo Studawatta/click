@@ -1,8 +1,8 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import './register.scss';
 import OAuth from '../../components/OAuth/OAuth';
+import './register.scss';
 
 const Register = () => {
   const navigate = useNavigate();

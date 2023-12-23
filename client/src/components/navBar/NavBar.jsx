@@ -8,6 +8,7 @@ import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import LogoutIcon from '@mui/icons-material/Logout';
 import emptyProfilePic from '../../assets/emptyProfilePic.jpg';
 import { useContext } from 'react';
 import { DarkModeContext } from '../../context/darkModeContext';
@@ -15,7 +16,15 @@ import { AuthContext } from '../../context/authContext';
 
 const NavBar = () => {
   const { toggle, darkMode } = useContext(DarkModeContext);
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, logout } = useContext(AuthContext);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="navBar">
       <div className="left">
@@ -38,6 +47,10 @@ const NavBar = () => {
         <PersonOutlinedIcon />
         <EmailOutlinedIcon />
         <NotificationsOutlinedIcon />
+        <LogoutIcon
+          style={{ color: 'red', cursor: 'pointer' }}
+          onClick={handleLogout}
+        />
         <Link
           to={`/profile/${currentUser.id}`}
           style={{ textDecoration: 'none' }}

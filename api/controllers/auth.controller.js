@@ -65,7 +65,11 @@ export const login = (req, res, next) => {
 
 export const logout = (req, res, next) => {
   try {
-    res.clearCookie('access_token');
+    console.log('sss');
+    res.clearCookie('access_token', {
+      secure: true,
+      sameSite: 'none',
+    });
     res.status(200).json('User has been logged out!');
   } catch (error) {
     next(error);
