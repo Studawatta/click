@@ -60,6 +60,8 @@ const Profile = () => {
     <>
       {isPending ? (
         'Loading...'
+      ) : error ? (
+        'Somthing went wrong'
       ) : (
         <div className="profile">
           <div className="images">

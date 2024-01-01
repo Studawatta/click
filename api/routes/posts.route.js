@@ -9,7 +9,7 @@ import { verifyToken } from '../utils/verifyUser.js';
 const router = express.Router();
 
 router.get('/', verifyToken, getPosts);
-router.get('/:id', verifyToken, getUserPosts);
+router.get('/:id', getUserPosts);
 router.post('/', verifyToken, addPosts);
 
 export default router;

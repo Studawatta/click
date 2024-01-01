@@ -10,7 +10,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const login = async (inputs) => {
     const res = await axios.post(
-      'http://localhost:8080/api/auth/login',
+      'https://click-api-haq2.onrender.com/api/auth/login',
       inputs,
       {
         withCredentials: true,
@@ -22,7 +22,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const logout = async () => {
     const res = await axios.post(
-      'http://localhost:8080/api/auth/logout',
+      'https://click-api-haq2.onrender.com/api/auth/logout',
       {},
       { withCredentials: true }
     );

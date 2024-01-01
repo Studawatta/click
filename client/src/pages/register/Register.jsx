@@ -20,7 +20,7 @@ const Register = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        'http://localhost:8080/api/auth/register',
+        'https://click-api-haq2.onrender.com/api/auth/register',
         formData
       );
 
